@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "how": "How it works",
+    "privacy": "Privacy",
+    "about": "About",
+    "language": "Language",
+    "login": "Sign in",
+    "register": "Create account",
+    "signOut": "Sign out",
+    "hello": "Hi",
+    "menu": "Open menu",
+    "close": "Close menu"
+  },
+  "language": {
+    "en": "English",
+    "es": "Spanish"
+  },
+  "hero": {
+    "eyebrow": "Your health, with more clarity",
+    "title": "Small steps,",
+    "titleAccent": "a healthier future.",
+    "description": "Understand your type 2 diabetes risk factors and find thoughtful guidance to care for yourself, at your own pace.",
+    "cta": "Get started for free",
+    "secondary": "See how it works",
+    "trust": "Your information is handled with care",
+    "visualAlt": "Illustration of wellbeing and supportive guidance",
+    "cardLabel": "Your wellbeing",
+    "cardTitle": "A clearer picture",
+    "chartCaption": "Healthy habits",
+    "chartStatus": "Every step counts",
+    "noteOneTitle": "At your own pace",
+    "noteOneCaption": "Support without judgment",
+    "noteTwoTitle": "Your information",
+    "noteTwoCaption": "Private and protected"
+  },
+  "signals": {
+    "title": "A fuller picture",
+    "clinical": "Clinical factors",
+    "habits": "Everyday habits",
+    "private": "Privacy first"
+  },
+  "how": {
+    "eyebrow": "Simple and within reach",
+    "title": "Understanding is",
+    "titleAccent": "the first step.",
+    "description": "Swira turns health information into clear guidance to help you make informed decisions.",
+    "step1Title": "Share information",
+    "step1Text": "Answer simple questions about your health and daily habits, at your own pace.",
+    "step2Title": "Understand your factors",
+    "step2Text": "Explore an informative estimate that considers different parts of your wellbeing.",
+    "step3Title": "Find your next step",
+    "step3Text": "Get practical ideas to discuss with a health professional and care for your health."
+  },
+  "privacy": {
+    "eyebrow": "Your data belongs to you",
+    "title": "We care for your health.",
+    "titleAccent": "We respect your privacy.",
+    "description": "Health information is personal. Swira is designed to handle your data thoughtfully and transparently as we build each part of the platform.",
+    "point1": "Protected connections between your device and Swira",
+    "point2": "Passwords stored with cryptographic protection",
+    "point3": "We use your data to provide guidance",
+    "visualCaption": "Designed with your privacy in mind"
+  },
+  "about": {
+    "eyebrow": "Informed support",
+    "title": "Technology with",
+    "titleAccent": "a human touch.",
+    "description": "Swira is a project in development that aims to make preventive information and guidance about type 2 diabetes easier to access. We want understanding your risk factors to feel simpler, more accessible, and useful for starting an informed conversation about your health.",
+    "contact": "Get in touch",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email address (optional)",
+    "emailPlaceholder": "you@example.com",
+    "messageLabel": "How can we help?",
+    "messagePlaceholder": "Write your message here…",
+    "submit": "Prepare message",
+    "note": "You can write anonymously to the contact email: airam2ww@gmail.com",
+    "messageRequired": "Please write a message before continuing.",
+    "draftReady": "Form validated. Email delivery will be enabled later; your message has not been sent."
+  },
+  "disclaimer": {
+    "title": "Guidance, not a diagnosis.",
+    "text": "Swira provides educational information and an informative estimate; it does not replace assessment, diagnosis, or treatment by a health professional. If you have concerns, talk with a medical professional."
+  },
+  "footer": {
+    "rights": "© 2026 Swira. Information to support you.",
+    "support": "Contact and support",
+    "privacy": "Privacy"
+  },
+  "auth": {
+    "createEyebrow": "A space for you",
+    "loginEyebrow": "Good to see you",
+    "createTitle": "Create your account",
+    "loginTitle": "Welcome back",
+    "createText": "Start learning about your health factors with clear, supportive guidance.",
+    "loginText": "Pick up where you left off.",
+    "name": "Name",
+    "namePlaceholder": "What should we call you?",
+    "email": "Email address",
+    "password": "Password",
+    "passwordHint": "Use at least 10 characters.",
+    "createButton": "Create my account",
+    "loginButton": "Sign in",
+    "loading": "One moment…",
+    "hasAccount": "Already have an account?",
+    "noAccount": "Don't have an account yet?",
+    "legal": "Your session is kept securely on this device.",
+    "close": "Close dialog",
+    "error": "We couldn't complete your request. Please try again.",
+    "welcome": "Your account is ready. Welcome to Swira!",
+    "signedIn": "You are now signed in."
+  }
+}

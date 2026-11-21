@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "how": "Cómo funciona",
+    "privacy": "Privacidad",
+    "about": "Acerca de",
+    "language": "Idioma",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "signOut": "Cerrar sesión",
+    "hello": "Hola",
+    "menu": "Abrir menú",
+    "close": "Cerrar menú"
+  },
+  "language": {
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "hero": {
+    "eyebrow": "Tu salud, con más claridad",
+    "title": "Pequeños pasos,",
+    "titleAccent": "un futuro más sano.",
+    "description": "Conoce mejor tus factores de riesgo de diabetes tipo 2 y encuentra orientación cercana para cuidar de ti, a tu propio ritmo.",
+    "cta": "Comenzar gratis",
+    "secondary": "Conoce cómo funciona",
+    "trust": "Tu información se protege con cuidado",
+    "visualAlt": "Gráfica ilustrativa de bienestar y acompañamiento",
+    "cardLabel": "Tu bienestar",
+    "cardTitle": "Una visión más clara",
+    "chartCaption": "Hábitos saludables",
+    "chartStatus": "Cada paso cuenta",
+    "noteOneTitle": "A tu propio ritmo",
+    "noteOneCaption": "Sin juicios, con apoyo",
+    "noteTwoTitle": "Tu información",
+    "noteTwoCaption": "Privada y protegida"
+  },
+  "signals": {
+    "title": "Una mirada integral",
+    "clinical": "Factores clínicos",
+    "habits": "Hábitos cotidianos",
+    "private": "Privacidad primero"
+  },
+  "how": {
+    "eyebrow": "Simple y a tu alcance",
+    "title": "Entender es el",
+    "titleAccent": "primer paso.",
+    "description": "Swira convierte información de salud en orientación comprensible para ayudarte a tomar decisiones informadas.",
+    "step1Title": "Comparte información",
+    "step1Text": "Responde preguntas sobre tu salud y tus hábitos diarios, con calma y de forma sencilla.",
+    "step2Title": "Conoce tus factores",
+    "step2Text": "Explora una estimación orientativa que considera distintos aspectos de tu bienestar.",
+    "step3Title": "Encuentra tu camino",
+    "step3Text": "Recibe ideas prácticas para conversar con un profesional y cuidar tu salud."
+  },
+  "privacy": {
+    "eyebrow": "Tus datos son tuyos",
+    "title": "Cuidamos tu salud.",
+    "titleAccent": "Respetamos tu privacidad.",
+    "description": "La información de salud es personal. Swira está diseñada para manejar tus datos con cuidado y transparencia mientras construimos cada parte de la plataforma.",
+    "point1": "Conexiones protegidas entre tu dispositivo y Swira",
+    "point2": "Contraseñas almacenadas con protección criptográfica",
+    "point3": "Usamos tus datos para brindarte orientación",
+    "visualCaption": "Diseñado pensando en tu privacidad"
+  },
+  "about": {
+    "eyebrow": "Acompañamiento informado",
+    "title": "Tecnología con",
+    "titleAccent": "sentido humano.",
+    "description": "Swira es un proyecto en desarrollo que busca acercar información y orientación preventiva sobre diabetes tipo 2. Queremos que entender tus factores de riesgo sea más sencillo, accesible y útil para iniciar una conversación informada sobre tu salud.",
+    "contact": "Contáctanos",
+    "nameLabel": "Nombre (opcional)",
+    "namePlaceholder": "Tu nombre",
+    "emailLabel": "Correo electrónico (opcional)",
+    "emailPlaceholder": "tu@correo.com",
+    "messageLabel": "¿En qué podemos ayudarte?",
+    "messagePlaceholder": "Escribe tu mensaje aquí…",
+    "submit": "Preparar mensaje",
+    "note": "Puedes escribir de forma anónima al correo de contacto: airam2ww@gmail.com",
+    "messageRequired": "Escribe un mensaje antes de continuar.",
+    "draftReady": "Formulario validado. El envío real por correo se habilitará más adelante; todavía no se ha enviado."
+  },
+  "disclaimer": {
+    "title": "Una guía, no un diagnóstico.",
+    "text": "Swira ofrece información educativa y una estimación orientativa; no sustituye la valoración, el diagnóstico ni el tratamiento de un profesional de la salud. Si tienes inquietudes, consulta a personal médico."
+  },
+  "footer": {
+    "rights": "© 2026 Swira. Información para acompañarte.",
+    "support": "Contacto y soporte",
+    "privacy": "Privacidad"
+  },
+  "auth": {
+    "createEyebrow": "Un espacio para ti",
+    "loginEyebrow": "Qué bueno verte",
+    "createTitle": "Crea tu cuenta",
+    "loginTitle": "Inicia sesión",
+    "createText": "Empieza a conocer tus factores de salud con orientación clara y cercana.",
+    "loginText": "Continúa donde lo dejaste.",
+    "name": "Nombre",
+    "namePlaceholder": "¿Cómo te llamas?",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordHint": "Usa al menos 10 caracteres.",
+    "createButton": "Crear mi cuenta",
+    "loginButton": "Iniciar sesión",
+    "loading": "Un momento…",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "legal": "Tu sesión se mantiene de forma segura en este dispositivo.",
+    "close": "Cerrar ventana",
+    "error": "No se pudo completar la solicitud. Intenta de nuevo.",
+    "welcome": "Tu cuenta está lista. ¡Bienvenido a Swira!",
+    "signedIn": "Has iniciado sesión correctamente."
+  }
+}

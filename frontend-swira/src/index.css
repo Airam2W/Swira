@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box
+}
+
+html {
+    min-width: 320px
+}
+
+body {
+    margin: 0
+}
+
+button,
+input,
+select {
+    font: inherit
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 3px solid #77cdb2;
+    outline-offset: 3px
+}
+
+::selection {
+    background: #cceee2;
+    color: #173633
+}
