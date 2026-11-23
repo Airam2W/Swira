@@ -1618,3 +1618,23 @@ select option,
 ::-webkit-scrollbar-thumb:active {
     background-color: var(--deep);
 }
+
+@media (max-width: 760px) {
+    .modal-backdrop {
+        align-items: center;
+        padding: 12px;
+        overflow-y: auto;
+    }
+
+    .auth-modal {
+        width: min(100%, 430px);
+        max-height: calc(100dvh - 24px);
+        border-radius: 18px;
+    }
+
+    .profiles-header .language-select {
+        position: relative;
+        top: auto;
+        right: auto;
+    }
+}

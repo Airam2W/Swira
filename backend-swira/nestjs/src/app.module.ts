@@ -5,6 +5,7 @@ import { Connection } from 'mongoose';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
+import { ProfilesModule } from './profiles/profiles.module.js';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module.js';
         const logger = new Logger('MongoDB');
         return {
           uri: configService.get<string>('MONGODB_URI'),
+          dbName: configService.get<string>('MONGODB_DB_NAME') ?? 'swira',
           onConnectionCreate: (connection: Connection) => {
             connection.on('connected', () => {
               logger.log('Conectado exitosamente al clúster de MongoDB');
@@ -43,6 +45,7 @@ import { AuthModule } from './auth/auth.module.js';
       },
     }),
     AuthModule,
+    ProfilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

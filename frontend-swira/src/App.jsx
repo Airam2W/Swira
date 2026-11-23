@@ -1,13 +1,34 @@
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef, useSyncExternalStore } from "react";
 import "./App.css";
+import "./pages/ProfilesPage.css";
 import es from "./locales/es.json";
 import en from "./locales/en.json";
 import { LanguageDropdown } from "./components/LanguageDropdown.jsx";
+import { ProfilesPage } from "./pages/ProfilesPage.jsx";
 
 const messages = { es, en };
+const appBase = import.meta.env.BASE_URL.replace(/\/$/, "");
 const apiUrl = (
   import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"
 ).replace(/\/$/, "");
+
+function appPath(path) {
+  const [pathname, query] = path.split("?");
+  return `${appBase}${pathname}${query ? `?${query}` : ""}` || "/";
+}
+
+function subscribeToRoute(callback) {
+  window.addEventListener("popstate", callback);
+  window.addEventListener("swira:navigate", callback);
+  return () => {
+    window.removeEventListener("popstate", callback);
+    window.removeEventListener("swira:navigate", callback);
+  };
+}
+
+function currentRoute() {
+  return `${window.location.pathname}${window.location.search}`;
+}
 
 function Icon({ name, size = 20 }) {
   const paths = {
@@ -69,20 +90,54 @@ function App() {
   const [lang, setLang] = useState(
     () => localStorage.getItem("swira-language") || "es",
   );
-  const [authMode, setAuthMode] = useState(null);
+  const [authMode, setAuthMode] = useState(() => new URLSearchParams(window.location.search).get("login") === "1" ? "login" : null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [authSuccess, setAuthSuccess] = useState("");
   const [contactStatus, setContactStatus] = useState("");
+  const [authChecked, setAuthChecked] = useState(false);
   const t = messages[lang];
+  const route = useSyncExternalStore(subscribeToRoute, currentRoute, () => "/");
+
+  const navigate = useCallback((path) => {
+    const url = appPath(path);
+    window.history.pushState({}, "", url);
+    if (url.includes("login=1")) setAuthMode("login");
+    window.dispatchEvent(new Event("swira:navigate"));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  const expireSession = useCallback(() => {
+    setUser(null);
+    navigate("/?login=1");
+  }, [navigate]);
 
   useEffect(() => {
+    const currentPath = window.location.pathname.replace(/\/$/, "");
+    const protectedRoute = currentPath.endsWith("/panel") || currentPath.includes("/resultados/");
     fetch(`${apiUrl}/auth/me`, { credentials: "include" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((data) => data && setUser(data.user))
-      .catch(() => {});
+      .then((data) => {
+        if (data?.user) {
+          setUser(data.user);
+          if (!protectedRoute) {
+            window.history.replaceState({}, "", appPath("/panel"));
+            window.dispatchEvent(new Event("swira:navigate"));
+          }
+        } else if (protectedRoute) {
+          window.history.replaceState({}, "", appPath("/?login=1"));
+          setAuthMode("login");
+          window.dispatchEvent(new Event("swira:navigate"));
+        }
+      })
+      .catch(() => {
+        if (protectedRoute) {
+          window.history.replaceState({}, "", appPath("/?login=1"));
+          setAuthMode("login");
+          window.dispatchEvent(new Event("swira:navigate"));
+        }
+      })
+      .finally(() => setAuthChecked(true));
   }, []);
 
   useEffect(() => {
@@ -138,15 +193,22 @@ useEffect(() => {
         }),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || t.auth.error);
+      if (!response.ok) {
+        const message = response.status === 409
+          ? t.auth.emailExists
+          : response.status === 400
+            ? t.auth.invalidData
+            : response.status === 401 && authMode === "login"
+              ? t.auth.invalidCredentials
+              : t.auth.error;
+        throw new Error(message);
+      }
       setUser(result.user);
       setAuthMode(null);
-      setAuthSuccess(
-        authMode === "register" ? t.auth.welcome : t.auth.signedIn,
-      );
-      window.setTimeout(() => setAuthSuccess(""), 4500);
+      navigate("/panel");
     } catch (error) {
-      setAuthError(error.message || t.auth.error);
+      const localizedMessages = [t.auth.emailExists, t.auth.invalidData, t.auth.invalidCredentials];
+      setAuthError(localizedMessages.includes(error.message) ? error.message : t.auth.error);
     } finally {
       setAuthLoading(false);
     }
@@ -158,6 +220,7 @@ useEffect(() => {
       credentials: "include",
     }).catch(() => {});
     setUser(null);
+    window.location.replace(appPath("/"));
   }
 
   function prepareContactMessage(event) {
@@ -175,6 +238,40 @@ useEffect(() => {
     setAuthError("");
     setAuthMode(mode);
     setMenuOpen(false);
+  }
+
+  if (route.replace(/\/$/, "").endsWith("/panel")) {
+    if (!authChecked || !user) {
+      return <div className="panel-loading" role="status">{t.panel.loading}</div>;
+    }
+    return (
+      <ProfilesPage
+        apiUrl={apiUrl}
+        user={user}
+        lang={lang}
+        t={t}
+        changeLanguage={changeLanguage}
+        onSignOut={signOut}
+        onNavigate={navigate}
+        onSessionExpired={expireSession}
+      />
+    );
+  }
+
+  if (route.includes("/resultados/") && authChecked && user) {
+    return (
+      <ProfilesPage
+        apiUrl={apiUrl}
+        user={user}
+        lang={lang}
+        t={t}
+        changeLanguage={changeLanguage}
+        onSignOut={signOut}
+        onNavigate={navigate}
+        onSessionExpired={expireSession}
+        resultsComingSoon
+      />
+    );
   }
 
   return (
@@ -528,11 +625,6 @@ useEffect(() => {
         </div>
       </footer>
 
-      {authSuccess && (
-        <div className="toast" role="status">
-          {authSuccess}
-        </div>
-      )}
       {authMode && (
         <div
           className="modal-backdrop"

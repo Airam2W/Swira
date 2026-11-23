@@ -36,10 +36,10 @@ export class AuthService {
     this.jwtSecret = secret;
   }
 
-  async register(input: { name?: string; email?: string; password?: string }) {
-    const name = input.name?.trim();
+  async register(input: { name?: unknown; email?: unknown; password?: unknown }) {
+    const name = typeof input.name === 'string' ? input.name.trim() : '';
     const email = this.normalizeEmail(input.email);
-    const password = input.password ?? '';
+    const password = typeof input.password === 'string' ? input.password : '';
     if (!name || name.length < 2 || name.length > 80) {
       throw new BadRequestException('Escribe un nombre de entre 2 y 80 caracteres.');
     }
@@ -66,9 +66,9 @@ export class AuthService {
     }
   }
 
-  async login(input: { email?: string; password?: string }) {
+  async login(input: { email?: unknown; password?: unknown }) {
     const email = this.normalizeEmail(input.email);
-    const password = input.password ?? '';
+    const password = typeof input.password === 'string' ? input.password : '';
     if (!this.validEmail(email) || password.length === 0 || password.length > 128) {
       throw new UnauthorizedException('Correo o contraseña incorrectos.');
     }
@@ -144,8 +144,8 @@ export class AuthService {
     }
   }
 
-  private normalizeEmail(email?: string) {
-    return email?.trim().toLowerCase() ?? '';
+  private normalizeEmail(email?: unknown) {
+    return typeof email === 'string' ? email.trim().toLowerCase() : '';
   }
 
   private validEmail(email: string) {
