@@ -22,7 +22,7 @@ export class AuthController {
     private readonly auth: AuthService,
     config: ConfigService,
   ) {
-    this.production = config.get<string>('NODE_ENV') === 'production';
+    this.production = config.get<string>('NODE_ENV') === 'Production';
     const configured = config.get<string>('FRONTEND_URL') ?? 'http://localhost:5173';
     this.allowedOrigins = new Set(
       configured.split(',').map((origin) => this.normalizeOrigin(origin)).filter(Boolean),

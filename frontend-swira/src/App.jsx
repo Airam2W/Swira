@@ -378,14 +378,6 @@ useEffect(() => {
             <div className="art-orbit orbit-one" />
             <div className="art-orbit orbit-two" />
             <div className="sun-disc" />
-            <img
-              className="hero-image-slot"
-              src={`${import.meta.env.BASE_URL}images/hero-health.png`}
-              alt=""
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
-            />
             <div className="health-card">
               <div className="card-topline">
                 <span className="card-icon">
