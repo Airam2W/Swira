@@ -22,7 +22,12 @@ Todas las rutas `/api/*` requieren el JWT HS256 de NestJS, mediante `Authorizati
 - `POST /api/sistemaExperto/obtenerExplicaciones`
 - `POST /api/sistemaExperto/obtenerRecomendaciones`
 - `POST /api/sistemaExperto/obtenerDatosGraficas`
+- `POST /api/sistemaExperto/obtenerGuiaCompleta`
 
-Los dos endpoints de predicción reciben directamente el esquema nativo de los modelos descrito en `modelosAI/validation.py`. Los endpoints del sistema experto reciben `{ "clinico": { ... }, "conductual": { ... } }` con ambos esquemas nativos completos; los valores faltantes se envían como `null`. Las variables del modelo conductual conservan sus códigos originales (por ejemplo, `Age` de 1 a 13, `Education` de 1 a 6 e `Income` de 1 a 8). La API no traduce los campos del formulario de perfiles automáticamente.
+Los endpoints de predicción aceptan los campos del modelo aunque algunos se omitan; los campos ausentes o `null` se convierten en valores faltantes para CatBoost. El endpoint conductual recibe `Age` en años y lo convierte al grupo de edad usado por ese modelo (1 a 13). Educación e ingresos se reciben como códigos ordinales numéricos (`Education` de 1 a 6, `Income` de 1 a 8).
+
+Los endpoints del Sistema Experto reciben `{ "clinico": { ... }, "conductual": { ... } }` con el esquema mostrado en la guía de Swira: la edad conductual va en años, `HighBP` y `Sex` se aceptan en el apartado clínico, y los valores opcionales se pueden omitir o enviar como `null`. La API genera por dentro el esquema CatBoost correspondiente y conserva la edad real para las explicaciones de EYRA. `obtenerGuiaCompleta` devuelve las dos estimaciones, resumen, explicaciones, recomendaciones y datos gráficos en una sola solicitud.
+
+NestJS hace la conversión desde el perfil: edad real para el Sistema Experto y categoría de edad para el modelo conductual; sexo se representa como 0/1 en el modelo de hábitos y como columnas indicadoras en el modelo clínico; educación e ingresos usan el orden numérico de sus opciones. Todos los campos pueden quedar vacíos; en ese caso se genera una guía usando los valores faltantes admitidos por los modelos.
 
 Los resultados son una guía informativa y no sustituyen la valoración de profesionales de la salud.

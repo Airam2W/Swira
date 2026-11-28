@@ -6,6 +6,7 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
 import { ProfilesModule } from './profiles/profiles.module.js';
+import { ResultsModule } from './profiles/results.module.js';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ProfilesModule } from './profiles/profiles.module.js';
     }),
     AuthModule,
     ProfilesModule,
+    ResultsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

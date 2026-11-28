@@ -19,9 +19,9 @@ export class Profile {
 
   @Prop({ min: 1, max: 120 }) age?: number;
   @Prop({ enum: ['male', 'female'] }) sex?: string;
-  @Prop({ min: 2, max: 500 }) weightKg?: number;
-  @Prop({ min: 30, max: 250 }) heightCm?: number;
-  @Prop({ min: 20, max: 1000 }) fastingGlucose?: number;
+  @Prop({ min: 2, max: 350 }) weightKg?: number;
+  @Prop({ min: 50, max: 250 }) heightCm?: number;
+  @Prop({ min: 20, max: 800 }) fastingGlucose?: number;
   @Prop({ min: 2, max: 20 }) a1c?: number;
   @Prop({ min: 0, max: 1000 }) insulin?: number;
   @Prop({ min: 1, max: 10000 }) triglycerides?: number;

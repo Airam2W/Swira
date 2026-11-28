@@ -28,6 +28,11 @@ export class ProfilesController {
     return this.profiles.update(req.user.id, id, body);
   }
 
+  @Patch(':id/health-data')
+  updateHealthData(@Req() req: AuthenticatedRequest, @Param('id') id: string, @Body() body: unknown) {
+    return this.profiles.updateHealthData(req.user.id, id, body);
+  }
+
   @Delete(':id')
   remove(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
     return this.profiles.remove(req.user.id, id);

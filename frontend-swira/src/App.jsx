@@ -5,6 +5,7 @@ import es from "./locales/es.json";
 import en from "./locales/en.json";
 import { LanguageDropdown } from "./components/LanguageDropdown.jsx";
 import { ProfilesPage } from "./pages/ProfilesPage.jsx";
+import { ResultsPage } from "./pages/ResultsPage.jsx";
 
 const messages = { es, en };
 const appBase = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -259,9 +260,12 @@ useEffect(() => {
   }
 
   if (route.includes("/resultados/") && authChecked && user) {
+    const profileId = route.split("?")[0].split("/").filter(Boolean).pop();
     return (
-      <ProfilesPage
+      <ResultsPage
+        key={profileId}
         apiUrl={apiUrl}
+        profileId={profileId}
         user={user}
         lang={lang}
         t={t}
@@ -269,9 +273,12 @@ useEffect(() => {
         onSignOut={signOut}
         onNavigate={navigate}
         onSessionExpired={expireSession}
-        resultsComingSoon
       />
     );
+  }
+
+  if (route.includes("/resultados/") && !authChecked) {
+    return <div className="panel-loading" role="status">{t.panel.loading}</div>;
   }
 
   return (

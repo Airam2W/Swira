@@ -2,13 +2,14 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, Types } from 'mongoose';
 import { Profile } from './profile.schema.js';
+import { Prediction } from './prediction.schema.js';
 
 const textFields = ['name', 'paternalSurname', 'maternalSurname'] as const;
 const numberRanges: Record<string, [number, number]> = {
   age: [1, 120],
-  weightKg: [2, 500],
-  heightCm: [30, 250],
-  fastingGlucose: [20, 1000],
+  weightKg: [2, 350],
+  heightCm: [50, 250],
+  fastingGlucose: [20, 800],
   a1c: [2, 20],
   insulin: [0, 1000],
   triglycerides: [1, 10000],
@@ -31,10 +32,14 @@ const createFields = new Set<string>([
   ...textFields, ...Object.keys(numberRanges), ...booleanFields, ...Object.keys(choices),
 ]);
 const editFields = new Set<string>(textFields);
+const healthFields = new Set<string>([...Object.keys(numberRanges), ...booleanFields, ...Object.keys(choices)]);
 
 @Injectable()
 export class ProfilesService {
-  constructor(@InjectModel(Profile.name) private readonly profiles: Model<Profile>) {}
+  constructor(
+    @InjectModel(Profile.name) private readonly profiles: Model<Profile>,
+    @InjectModel(Prediction.name) private readonly predictions: Model<Prediction>,
+  ) {}
 
   async list(ownerId: string) {
     return this.profiles.find({ ownerId: new Types.ObjectId(ownerId) })
@@ -61,6 +66,9 @@ export class ProfilesService {
 
   async remove(ownerId: string, profileId: string) {
     const id = this.parseId(profileId);
+    const profile = await this.profiles.findOne({ _id: id, ownerId: new Types.ObjectId(ownerId) }).select('_id').lean();
+    if (!profile) throw new NotFoundException('No encontramos ese perfil.');
+    await this.predictions.deleteMany({ profileId: id, ownerId: new Types.ObjectId(ownerId) });
     const result = await this.profiles.deleteOne({ _id: id, ownerId: new Types.ObjectId(ownerId) });
     if (result.deletedCount === 0) throw new NotFoundException('No encontramos ese perfil.');
     return { success: true };
@@ -74,7 +82,26 @@ export class ProfilesService {
     return profile;
   }
 
-  private validate(input: unknown, allowedFields: Set<string>, creating: boolean) {
+  async updateHealthData(ownerId: string, profileId: string, input: unknown) {
+    const id = this.parseId(profileId);
+    const data = this.validate(input, healthFields, false, true);
+    const body = input as Record<string, unknown>;
+    const clearFields = Object.keys(body).filter((field) =>
+      healthFields.has(field) && (body[field] === null || body[field] === ''),
+    );
+    if (Object.keys(data).length === 0 && clearFields.length === 0) this.invalid('profile', 'empty');
+    const update: Record<string, unknown> = {};
+    if (Object.keys(data).length) update.$set = data;
+    if (clearFields.length) update.$unset = Object.fromEntries(clearFields.map((field) => [field, 1]));
+    const profile = await this.profiles.findOneAndUpdate(
+      { _id: id, ownerId: new Types.ObjectId(ownerId) }, update,
+      { new: true, runValidators: true },
+    ).select('-ownerId').lean();
+    if (!profile) throw new NotFoundException('No encontramos ese perfil.');
+    return profile;
+  }
+
+  private validate(input: unknown, allowedFields: Set<string>, creating: boolean, allowEmpty = false) {
     if (!input || typeof input !== 'object' || Array.isArray(input)) {
       this.invalid('profile', 'profile');
     }
@@ -104,6 +131,9 @@ export class ProfilesService {
       const value = body[field];
       if (typeof value !== 'number' || !Number.isFinite(value)) this.invalid(field, 'number');
       if (value < min || value > max) this.invalid(field, 'range', { min, max });
+      if ((field === 'age' || field === 'poorMentalHealthDays') && !Number.isInteger(value)) {
+        this.invalid(field, 'number');
+      }
       result[field] = value;
     }
 
@@ -124,7 +154,7 @@ export class ProfilesService {
     if (creating && (!('name' in result) || result.name === '')) {
       this.invalid('name', 'required');
     }
-    if (!creating && Object.keys(result).length === 0) {
+    if (!creating && !allowEmpty && Object.keys(result).length === 0) {
       this.invalid('profile', 'empty');
     }
     return result;

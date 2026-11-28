@@ -1,34 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { LanguageDropdown } from "../components/LanguageDropdown.jsx";
-
-const numericFields = [
-  ["fastingGlucose", "number", 20, 1000, 1, "mg/dL"],
-  ["a1c", "number", 2, 20, 0.1, "%"],
-  ["age", "number", 1, 120, 1, ""],
-  ["weightKg", "number", 2, 500, 0.1, "kg"],
-  ["heightCm", "number", 30, 250, 0.1, "cm"],
-  ["insulin", "number", 0, 1000, 0.1, "μU/mL"],
-  ["triglycerides", "number", 1, 10000, 1, "mg/dL"],
-  ["hdl", "number", 1, 300, 1, "mg/dL"],
-  ["ldl", "number", 1, 1000, 1, "mg/dL"],
-  ["uricAcid", "number", 0, 30, 0.1, "mg/dL"],
-  ["poorMentalHealthDays", "number", 0, 30, 1, ""],
-];
-
-const selectFields = [
-  ["hypertensionHigh", "yesNo"],
-  ["walkingDifficulty", "yesNo"],
-  ["sex", "sex"],
-  ["physicalActivity30d", "yesNo"],
-  ["smokeCurrentOrPast", "yesNo"],
-  ["eatsFruitDaily", "yesNo"],
-  ["eatsVegetablesDaily", "yesNo"],
-  ["frequentAlcohol", "yesNo"],
-  ["hasHealthInsurance", "yesNo"],
-  ["deferredCareDueToCost", "yesNo"],
-  ["education", "education"],
-  ["incomeMonthlyMxn", "income"],
-];
+import { numericFields, selectFields } from "./profileFields.js";
 
 function profileDisplayName(profile) {
   return [profile.name, profile.paternalSurname, profile.maternalSurname]
@@ -452,7 +424,7 @@ export function ProfilesPage({
   );
 }
 
-function PanelHeader({ user, lang, t, changeLanguage, onSignOut, onNavigate }) {
+export function PanelHeader({ lang, t, changeLanguage, onSignOut, onNavigate }) {
   return (
     <header className="profiles-header">
       <button
@@ -525,8 +497,9 @@ function ProfileCard({ profile, t, onView, onEdit, onDelete }) {
   );
 }
 
-function ProfileEditor({ mode, profile, saving, error, t, onClose, onSubmit }) {
+export function ProfileEditor({ mode, profile, saving, error, t, onClose, onSubmit }) {
   const isCreate = mode === "create";
+  const isHealthUpdate = mode === "health";
   const initial = profile || {};
   const [fieldErrors, setFieldErrors] = useState({});
 
@@ -580,12 +553,12 @@ function ProfileEditor({ mode, profile, saving, error, t, onClose, onSubmit }) {
         <div className="profile-editor-heading">
           <div>
             <span className="profiles-kicker">
-              {isCreate ? t.panel.newProfile : t.panel.editProfile}
+              {isCreate ? t.panel.newProfile : isHealthUpdate ? t.results.update : t.panel.editProfile}
             </span>
             <h2 id="profile-editor-title">
-              {isCreate ? t.panel.formTitle : t.panel.formEditTitle}
+              {isCreate ? t.panel.formTitle : isHealthUpdate ? t.results.updateTitle : t.panel.formEditTitle}
             </h2>
-            <p>{isCreate ? t.panel.formIntro : t.panel.formEditIntro}</p>
+            <p>{isCreate ? t.panel.formIntro : isHealthUpdate ? t.results.updateDescription : t.panel.formEditIntro}</p>
           </div>
           <button
             type="button"
@@ -597,7 +570,7 @@ function ProfileEditor({ mode, profile, saving, error, t, onClose, onSubmit }) {
           </button>
         </div>
         <form className="profile-form" noValidate onSubmit={handleSubmit}>
-          <div className="profile-form-grid profile-name-grid">
+          {!isHealthUpdate && <div className="profile-form-grid profile-name-grid">
             <ProfileTextField
               field="name"
               label={t.panel.fields.name}
@@ -623,8 +596,8 @@ function ProfileEditor({ mode, profile, saving, error, t, onClose, onSubmit }) {
               onChange={validateLive}
               onBlur={validateLive}
             />
-          </div>
-          {isCreate && (
+          </div>}
+          {(isCreate || isHealthUpdate) && (
             <>
               <ProfileFieldGroup
                 title={t.panel.recommendedTitle}
@@ -708,9 +681,11 @@ function ProfileEditor({ mode, profile, saving, error, t, onClose, onSubmit }) {
             >
               {saving
                 ? t.panel.saving
-                : isCreate
+                  : isCreate
                   ? t.panel.saveProfile
-                  : t.panel.saveChanges}
+                  : isHealthUpdate
+                    ? t.results.saveUpdate
+                    : t.panel.saveChanges}
             </button>
           </div>
         </form>

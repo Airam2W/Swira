@@ -130,3 +130,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Servicio de perfiles y conexión con los modelos de Swira
+
+Configura `AI_SERVICE_URL` con la URL base del servicio Flask (`backend-swira/AI`). En desarrollo usa `http://localhost:5000`; en Render usa la URL pública del servicio de IA. NestJS reenvía el JWT recibido en la cookie de sesión, por lo que el secreto `JWT_SECRET` debe coincidir en ambos servicios. Consulta `.env-example` para las variables locales.
